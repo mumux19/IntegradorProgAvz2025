@@ -125,16 +125,16 @@ Response: 201 Created, body -> TaskResponse
 
 Team 2 (Create, Delete & Filter queries)
 #### Required use cases:
-CreateProject
-CreateTask (under a project) — must verify project exists and is not CLOSED
-DeleteProject (only allowed if project has no tasks; otherwise 409)
-FindTasks with numeric filter: find tasks with estimateHours > X or < Y, filter by assignee
-DeleteTask
+- CreateProject
+- CreateTask (under a project) — must verify project exists and is not CLOSED
+- DeleteProject (only allowed if project has no tasks; otherwise 409)
+- FindTasks with numeric filter: find tasks with estimateHours > X or < Y, filter by assignee
+- DeleteTask
 #### Endpoints to implement:
-POST /projects
-POST /projects/{projectId}/tasks
-DELETE /projects/{projectId}
-GET /tasks?minEstimate=8&assignee=alice
-DELETE /projects/{projectId}/tasks/{taskId}
+- POST /projects
+- POST /projects/{projectId}/tasks
+- DELETE /projects/{projectId}
+- GET /tasks?minEstimate=8&assignee=alice
+- DELETE /projects/{projectId}/tasks/{taskId}
 
 
