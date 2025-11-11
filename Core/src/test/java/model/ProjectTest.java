@@ -1,11 +1,9 @@
-package Model;
+package model;
 
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import Model.ProjectStatus;
 
 import java.time.LocalDate;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ProjectTest {
@@ -13,7 +11,7 @@ public class ProjectTest {
 @Test
     public void FactoryTrue() {
 
-    Project project = Project.factory(randomId,
+    Project project = Project.create(randomId,
             "Website Redesign",
             LocalDate.of(2025, 10, 1),
             LocalDate.of(2025, 12, 1),
@@ -25,49 +23,49 @@ public class ProjectTest {
 }
 @Test
     public void FacoryFalse(){
-    Assertions.assertThrows(Exception.class, () -> {Project.factory(null,
+    Assertions.assertThrows(Exception.class, () -> {Project.create(null,
             "Website Redesign",
             LocalDate.of(2025, 10, 1),
             LocalDate.of(2025, 12, 1),
             ProjectStatus.ACTIVE,
             "Redesign the corporate website to improve user experience.");});
-    Assertions.assertThrows(Exception.class, () -> {Project.factory(randomId,
+    Assertions.assertThrows(Exception.class, () -> {Project.create(randomId,
             null,
             LocalDate.of(2025, 10, 1),
             LocalDate.of(2025, 12, 1),
             ProjectStatus.ACTIVE,
             "Redesign the corporate website to improve user experience.");});
-    Assertions.assertThrows(Exception.class, () -> {Project.factory(randomId,
+    Assertions.assertThrows(Exception.class, () -> {Project.create(randomId,
             "",
             LocalDate.of(2025, 10, 1),
             LocalDate.of(2025, 12, 1),
             ProjectStatus.ACTIVE,
             "Redesign the corporate website to improve user experience.");});
-    Assertions.assertThrows(Exception.class, () -> {Project.factory(randomId,
+    Assertions.assertThrows(Exception.class, () -> {Project.create(randomId,
             "Website Redesign",
             null,
             LocalDate.of(2025, 12, 1),
             ProjectStatus.ACTIVE,
             "Redesign the corporate website to improve user experience.");});
-    Assertions.assertThrows(Exception.class, () -> {Project.factory(randomId,
+    Assertions.assertThrows(Exception.class, () -> {Project.create(randomId,
             "Website Redesign",
             LocalDate.of(2025, 10, 1),
             null,
             ProjectStatus.ACTIVE,
             "Redesign the corporate website to improve user experience.");});
-    Assertions.assertThrows(Exception.class, () -> {Project.factory(randomId,
+    Assertions.assertThrows(Exception.class, () -> {Project.create(randomId,
             "Website Redesign",
             LocalDate.of(2025, 10, 1),
             LocalDate.of(2025, 12, 1),
             null,
             "Redesign the corporate website to improve user experience.");});
-    Assertions.assertThrows(Exception.class, () -> {Project.factory(randomId,
+    Assertions.assertThrows(Exception.class, () -> {Project.create(randomId,
             "Website Redesign",
             LocalDate.of(2025, 10, 1),
             LocalDate.of(2025, 12, 1),
             ProjectStatus.ACTIVE,
             "");});
-    Assertions.assertThrows(Exception.class, () -> {Project.factory(randomId,
+    Assertions.assertThrows(Exception.class, () -> {Project.create(randomId,
             "Website Redesign",
             LocalDate.of(2025, 10, 1),
             LocalDate.of(2025, 12, 1),

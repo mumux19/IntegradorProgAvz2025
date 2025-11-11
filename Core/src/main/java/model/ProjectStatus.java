@@ -1,8 +1,7 @@
-package Model;
+package model;
 
 public enum ProjectStatus {
     PLANNED,
-    IN_PROGRESS,
     ACTIVE,
     CLOSED
 }

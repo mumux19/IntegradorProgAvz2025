@@ -1,5 +1,5 @@
-package Model;
-import Exception.ProjectException;
+package model;
+import exception.ProjectException;
 
 import java.time.LocalDate;
 
@@ -18,7 +18,7 @@ public class Project {
         this.status = status;
         this.description = description;
     }
-    public static Project factory(Long id, String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description) {
+    public static Project create(Long id, String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description) {
        if (id == null) {
            throw new ProjectException("Project ID cannot be null");
        }
