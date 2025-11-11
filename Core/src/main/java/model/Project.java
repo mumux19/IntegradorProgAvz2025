@@ -50,7 +50,5 @@ public class Project {
     }
 
 
-    public long getId() {
-        return id;
-    }
+
 }
