@@ -54,7 +54,7 @@ For bulk/batch endpoints return structured result: { "successes": [{ "index": 0,
 
 Use Repository interfaces and inject concrete JPA or in-memory implementations.
 Use DTOs + Mapper to decouple API and domain.
-Use UseCase classes per functionality to follow Single Responsibility and to make testing easier.
+Use usecase classes per functionality to follow Single Responsibility and to make testing easier.
 Use factory/static factory methods for domain creation validations.
 Keep controllers as adapters mapping HTTP to DTOs and calling use cases.
 Keep business exceptions expressive so ControllerAdvice can map them to correct HTTP codes.
