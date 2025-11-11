@@ -1,5 +1,7 @@
 package model;
 import exception.ProjectException;
+import exception.ProjectUseCaseException;
+
 
 import java.time.LocalDate;
 
@@ -31,6 +33,12 @@ public class Project {
        if (endDate == null) {
            throw new ProjectException("End date cannot be null");
        }
+        if (endDate.isBefore(startDate)) {
+            throw new ProjectException("The end date cannot be earlier than the start date");
+        }
+        if (endDate.isBefore(LocalDate.now())) {
+            throw new ProjectException("The end date cannot be earlier than today");
+        }
        if (status == null) {
            throw new ProjectException("Project status cannot be null");
        }
@@ -42,4 +50,7 @@ public class Project {
     }
 
 
+    public long getId() {
+        return id;
+    }
 }

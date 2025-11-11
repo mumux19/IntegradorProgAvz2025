@@ -55,6 +55,19 @@ public class ProjectTest {
             "Redesign the corporate website to improve user experience.");});
     Assertions.assertThrows(Exception.class, () -> {Project.create(randomId,
             "Website Redesign",
+            LocalDate.of(2025, 12, 1),
+            LocalDate.of(2025, 10, 1),
+            ProjectStatus.ACTIVE,
+            "Redesign the corporate website to improve user experience.");});
+    Assertions.assertThrows(Exception.class, () -> {Project.create(randomId,
+            "Website Redesign",
+            LocalDate.of(2020, 10, 1),
+            LocalDate.of(2020, 12, 1),
+            ProjectStatus.ACTIVE,
+            "Redesign the corporate website to improve user experience.");});
+
+    Assertions.assertThrows(Exception.class, () -> {Project.create(randomId,
+            "Website Redesign",
             LocalDate.of(2025, 10, 1),
             LocalDate.of(2025, 12, 1),
             null,
