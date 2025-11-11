@@ -1,7 +1,8 @@
 package usecase;
 
 
-import exception.ProjectUseCaseException;
+import exception.BusinessRuleViolationException;
+import exception.DuplicateResourceException;
 import input.CreateProjectInput;
 import model.Project;
 import model.ProjectStatus;
@@ -15,16 +16,16 @@ public class CreateProjectUseCase implements CreateProjectInput {
         this.projectOutPut = projectOutPut;
     }
     @Override
-    public boolean createProject(long id, String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description) throws ProjectUseCaseException {
+    public boolean createProject(long id, String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description)  {
         Project project=Project.create(id,name,startDate,endDate,status,description);
         if (projectOutPut.validateName(name)){
-            throw new ProjectUseCaseException("El proyecto ya existe");
+            throw new DuplicateResourceException("The project already exists");
         }
 
         if(projectOutPut.saveProject(project)){
             return true;
         }
 
-        throw new ProjectUseCaseException("Error al guardar el proyecto");
+        throw new BusinessRuleViolationException("Error saving project");
     }
 }
