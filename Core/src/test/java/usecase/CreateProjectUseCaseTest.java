@@ -1,14 +1,12 @@
 package usecase;
 
 
-import exception.BusinessRuleViolationException;
-import exception.DuplicateResourceException;
+import exception.ProjectUseCaseException;
 import model.Project;
 import model.ProjectStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import output.ProjectOutPut;
@@ -44,7 +42,7 @@ public class CreateProjectUseCaseTest {
     public void CreateProjectAlreadyExists() {
         CreateProjectUseCase createProjectUseCase = new CreateProjectUseCase(projectOutPut);
         when(projectOutPut.validateName("Website Redesign")).thenReturn(true);
-        Assertions.assertThrows(DuplicateResourceException.class, () -> createProjectUseCase.createProject(randomId,
+        Assertions.assertThrows(ProjectUseCaseException.class, () -> createProjectUseCase.createProject(randomId,
                 "Website Redesign",
                 LocalDate.now().plusMonths(1),
                 LocalDate.now().plusMonths(2),
@@ -58,7 +56,7 @@ public class CreateProjectUseCaseTest {
         CreateProjectUseCase createProjectUseCase = new CreateProjectUseCase(projectOutPut);
         when(projectOutPut.validateName("Website Redesign")).thenReturn(false);
         when(projectOutPut.saveProject(any(Project.class))).thenReturn(false);
-        Assertions.assertThrows(BusinessRuleViolationException.class,  () -> createProjectUseCase.createProject(randomId,
+        Assertions.assertThrows(ProjectUseCaseException.class,  () -> createProjectUseCase.createProject(randomId,
                 "Website Redesign",
                 LocalDate.now().plusMonths(1),
                 LocalDate.now().plusMonths(2),

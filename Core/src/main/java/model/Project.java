@@ -1,6 +1,7 @@
 package model;
-import exception.ValidationException;
 
+
+import exception.ProjectException;
 
 import java.time.LocalDate;
 
@@ -21,28 +22,28 @@ public class Project {
     }
     public static Project create(Long id, String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description) {
        if (id == null) {
-           throw new ValidationException("Project ID cannot be null");
+           throw new ProjectException("Project ID cannot be null");
        }
        if (name == null || name.isEmpty()) {
-           throw new ValidationException("Project name cannot be null or empty");
+           throw new ProjectException("Project name cannot be null or empty");
          }
        if (startDate == null) {
-           throw new ValidationException("Start date cannot be null");
+           throw new ProjectException("Start date cannot be null");
        }
        if (endDate == null) {
-           throw new ValidationException("End date cannot be null");
+           throw new ProjectException("End date cannot be null");
        }
         if (endDate.isBefore(startDate)) {
-            throw new ValidationException("The end date cannot be earlier than the start date");
+            throw new ProjectException("The end date cannot be earlier than the start date");
         }
         if (endDate.isBefore(LocalDate.now())) {
-            throw new ValidationException("The end date cannot be earlier than today");
+            throw new ProjectException("The end date cannot be earlier than today");
         }
        if (status == null) {
-           throw new ValidationException("Project status cannot be null");
+           throw new ProjectException("Project status cannot be null");
        }
        if (description == null || description.isEmpty()) {
-           throw new ValidationException("Project description cannot be null or empty");
+           throw new ProjectException("Project description cannot be null or empty");
        }
 
         return new Project(id, name, startDate, endDate, status, description);
