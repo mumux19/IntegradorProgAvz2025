@@ -1,7 +1,6 @@
 package usecase;
 
-import exception.BusinessRuleViolationException;
-import exception.ResourceNotFoundException;
+import exception.ProjectUseCaseException;
 import input.DeleteProjectInput;
 import output.ProjectOutPut;
 
@@ -15,10 +14,10 @@ public class DeleteProjectUseCase implements DeleteProjectInput {
     @Override
     public boolean deleteProject(String name) throws Exception {
         if(!projectOutPut.validateName(name)){
-            throw new ResourceNotFoundException("There is no project with that ID");
+            throw new ProjectUseCaseException("There is no project with that ID");
         }
         if(!projectOutPut.deleteProject(name)){
-            throw new BusinessRuleViolationException("Error deleting project");
+            throw new ProjectUseCaseException("Error deleting project");
         }
         return true;
     }
