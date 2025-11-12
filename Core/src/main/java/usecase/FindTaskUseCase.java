@@ -10,6 +10,7 @@ public class FindTaskUseCase implements FindTaskInput {
     TaskOutPut taskOutPut;
 
     public FindTaskUseCase(TaskOutPut taskOutPut) {
+
         this.taskOutPut = taskOutPut;
     }
 
@@ -20,7 +21,14 @@ public class FindTaskUseCase implements FindTaskInput {
             throw new TaskUseCaseException("Invalid title");
         }
 
-        return taskOutPut.findTask(title);
+       Task task= taskOutPut.findTask(title);
+
+        if(task== null) {
+            throw new TaskUseCaseException("Task not found");
+        }
+
+        return task ;
+
 
     }
 }
