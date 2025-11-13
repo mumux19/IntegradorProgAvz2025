@@ -1,7 +1,7 @@
 package exception;
 
 public class ProjectUseCaseException extends RuntimeException {
-    public ProjectUseCaseException(String msj) {
-        super(msj);
+    public ProjectUseCaseException(String message) {
+        super(message);
     }
 }
