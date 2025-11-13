@@ -1,6 +1,7 @@
 package model;
 
-import exception.ValidationException;
+import exception.TaskException;
+
 
 import java.time.Clock;
 import java.time.Instant;
@@ -30,24 +31,24 @@ public class Task {
     public static Task create(Long id, String title, Integer estimateHours, String assignee, TaskStatus status, Clock clock) {
         LocalDateTime now = LocalDateTime.now();
         if (id == null) {
-            throw new ValidationException("Task ID cannot be null");
+            throw new TaskException("Task ID cannot be null");
         }
         if (title == null || title.isEmpty()) {
-            throw new ValidationException("Task title cannot be null or empty");
+            throw new TaskException("Task title cannot be null or empty");
         }
         if (estimateHours == null || estimateHours <= 0) {
-            throw new ValidationException("Estimate hours must be a positive integer");
+            throw new TaskException("Estimate hours must be a positive integer");
         }
         if (assignee == null || assignee.isEmpty()) {
-            throw new ValidationException("Assignee cannot be null or empty");
+            throw new TaskException("Assignee cannot be null or empty");
         }
         if (status == null) {
-            throw new ValidationException("Task status cannot be null");
+            throw new TaskException("Task status cannot be null");
         }
 
         if(clock == null) {
 
-            throw new ValidationException("Clock cannot be null");
+            throw new TaskException("Clock cannot be null");
         }
 
         Instant nowSystem= Instant.now(Clock.systemDefaultZone());
@@ -55,7 +56,7 @@ public class Task {
         Instant nowFromClock= Instant.now(clock);
 
         if( nowFromClock.isAfter(nowSystem)) {
-            throw new ValidationException("Clock time cannot be in the future compared to system time");
+            throw new TaskException("Clock time cannot be in the future compared to system time");
         }
 
 

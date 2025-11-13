@@ -1,6 +1,5 @@
 package model;
 
-
 import exception.ProjectException;
 
 import java.time.LocalDate;
