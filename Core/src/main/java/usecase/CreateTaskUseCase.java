@@ -1,6 +1,5 @@
 package usecase;
 
-import exception.DuplicateResourceException;
 import exception.TaskUseCaseException;
 import input.CreateProjectInput;
 import input.CreateTaskInput;

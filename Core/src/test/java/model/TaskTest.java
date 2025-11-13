@@ -31,15 +31,15 @@ public class TaskTest {
 
     @Test
     public void FactoryFalse() {
-        Assertions.assertThrows(exception.ValidationException.class, () -> {
+        Assertions.assertThrows(exception.TaskException.class, () -> {
             Task.create(null, "Website Redesign", 5, "John Doe", TaskStatus.ACTIVE, java.time.Clock.systemUTC());
         });
-        Assertions.assertThrows(exception.ValidationException.class, () -> {
+        Assertions.assertThrows(exception.TaskException.class, () -> {
             Task.create(randomId, null, 5, "John Doe",
                     TaskStatus.ACTIVE,
                     fixedClock);
         });
-        Assertions.assertThrows(exception.ValidationException.class, () -> {
+        Assertions.assertThrows(exception.TaskException.class, () -> {
             Task.create(randomId,
                     "",
                     5,
@@ -47,7 +47,7 @@ public class TaskTest {
                     TaskStatus.ACTIVE,
                     fixedClock);
         });
-        Assertions.assertThrows(exception.ValidationException.class, () -> {
+        Assertions.assertThrows(exception.TaskException.class, () -> {
             Task.create(randomId,
                     "Website Redesign",
                     -1,
@@ -55,7 +55,7 @@ public class TaskTest {
                     TaskStatus.ACTIVE,
                     fixedClock);
         });
-        Assertions.assertThrows(exception.ValidationException.class, () -> {
+        Assertions.assertThrows(exception.TaskException.class, () -> {
             Task.create(randomId,
                     "Website Redesign",
                     null,
@@ -63,7 +63,7 @@ public class TaskTest {
                     TaskStatus.ACTIVE,
                     fixedClock);
         });
-        Assertions.assertThrows(exception.ValidationException.class, () -> {
+        Assertions.assertThrows(exception.TaskException.class, () -> {
             Task.create(randomId,
                     "Website Redesign",
                     5,
@@ -71,7 +71,7 @@ public class TaskTest {
                     TaskStatus.ACTIVE,
                     fixedClock);
         });
-        Assertions.assertThrows(exception.ValidationException.class, () -> {
+        Assertions.assertThrows(exception.TaskException.class, () -> {
             Task.create(randomId,
                     "Website Redesign",
                     5,
@@ -79,7 +79,7 @@ public class TaskTest {
                     TaskStatus.ACTIVE,
                     fixedClock);
         });
-        Assertions.assertThrows(exception.ValidationException.class, () -> {
+        Assertions.assertThrows(exception.TaskException.class, () -> {
             Task.create(randomId,
                     "Website Redesign",
                     5,
@@ -87,7 +87,7 @@ public class TaskTest {
                     null,
                     fixedClock);
         });
-        Assertions.assertThrows(exception.ValidationException.class, () -> {
+        Assertions.assertThrows(exception.TaskException.class, () -> {
             Task.create(randomId,
                     "Website Redesign",
                     5,
@@ -98,7 +98,7 @@ public class TaskTest {
 
         LocalDateTime futureTime = LocalDateTime.of(2030, 1, 1, 0, 0);
         Clock futureClock = Clock.fixed(futureTime.toInstant(ZoneOffset.UTC),ZoneOffset.UTC);
-        Assertions.assertThrows(exception.ValidationException.class, () -> {
+        Assertions.assertThrows(exception.TaskException.class, () -> {
             Task.create(randomId,
                     "Website Redesign",
                     5,
