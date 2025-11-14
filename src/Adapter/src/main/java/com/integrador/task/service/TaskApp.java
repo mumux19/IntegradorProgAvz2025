@@ -1,4 +1,4 @@
-package com.integrador;
+package com.integrador.task.service;
 
 /**
  * Hello world!
