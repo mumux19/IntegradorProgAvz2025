@@ -15,9 +15,10 @@ public class TaskTest {
             LocalDateTime.of(2025, 11, 11, 10, 0).toInstant(ZoneOffset.UTC),
             ZoneOffset.UTC
     );
+
     @Test
     public void FactoryTrue() {
-        Task task= Task.create(randomId,
+        Task task = Task.create(randomId,
                 "Website Redesign",
                 5,
                 "John Doe",
@@ -97,7 +98,7 @@ public class TaskTest {
         });
 
         LocalDateTime futureTime = LocalDateTime.of(2030, 1, 1, 0, 0);
-        Clock futureClock = Clock.fixed(futureTime.toInstant(ZoneOffset.UTC),ZoneOffset.UTC);
+        Clock futureClock = Clock.fixed(futureTime.toInstant(ZoneOffset.UTC), ZoneOffset.UTC);
         Assertions.assertThrows(exception.TaskException.class, () -> {
             Task.create(randomId,
                     "Website Redesign",

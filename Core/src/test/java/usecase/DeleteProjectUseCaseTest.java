@@ -19,14 +19,16 @@ public class DeleteProjectUseCaseTest {
     long randomId = ThreadLocalRandom.current().nextLong(1, 1000);
     @Mock
     ProjectOutPut projectOutPut;
+
     @Test
     public void DeleteProjectTrue() throws Exception {
-        DeleteProjectUseCase deleteProjectUseCase=new DeleteProjectUseCase(projectOutPut);
+        DeleteProjectUseCase deleteProjectUseCase = new DeleteProjectUseCase(projectOutPut);
         when(projectOutPut.validateName("Website Redesign")).thenReturn(true);
         when(projectOutPut.deleteProject("Website Redesign")).thenReturn(true);
-        boolean resultado=deleteProjectUseCase.deleteProject("Website Redesign");
-        Assertions.assertEquals(resultado,true);
+        boolean resultado = deleteProjectUseCase.deleteProject("Website Redesign");
+        Assertions.assertEquals(resultado, true);
     }
+
     @Test
     public void DeleteProjectNotExists() {
         DeleteProjectUseCase deleteProjectUseCase = new DeleteProjectUseCase(projectOutPut);
@@ -34,6 +36,7 @@ public class DeleteProjectUseCaseTest {
         Assertions.assertThrows(ProjectUseCaseException.class, () -> deleteProjectUseCase.deleteProject("Website Redesign"));
 
     }
+
     @Test
     public void DeleteProjectFalse() throws Exception {
         DeleteProjectUseCase deleteProjectUseCase = new DeleteProjectUseCase(projectOutPut);
@@ -41,7 +44,6 @@ public class DeleteProjectUseCaseTest {
         when(projectOutPut.deleteProject("Website Redesign")).thenReturn(false);
         Assertions.assertThrows(ProjectUseCaseException.class, () -> deleteProjectUseCase.deleteProject("Website Redesign"));
     }
-
 
 
 }

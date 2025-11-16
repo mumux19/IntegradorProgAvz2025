@@ -46,16 +46,16 @@ public class Task {
             throw new TaskException("Task status cannot be null");
         }
 
-        if(clock == null) {
+        if (clock == null) {
 
             throw new TaskException("Clock cannot be null");
         }
 
-        Instant nowSystem= Instant.now(Clock.systemDefaultZone());
+        Instant nowSystem = Instant.now(Clock.systemDefaultZone());
 
-        Instant nowFromClock= Instant.now(clock);
+        Instant nowFromClock = Instant.now(clock);
 
-        if( nowFromClock.isAfter(nowSystem)) {
+        if (nowFromClock.isAfter(nowSystem)) {
             throw new TaskException("Clock time cannot be in the future compared to system time");
         }
 

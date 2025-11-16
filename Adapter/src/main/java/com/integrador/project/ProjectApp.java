@@ -1,4 +1,4 @@
-package com.integrador.project.service;
+package com.integrador.project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

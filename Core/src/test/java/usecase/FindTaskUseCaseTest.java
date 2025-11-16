@@ -38,7 +38,7 @@ public class FindTaskUseCaseTest {
         FindTaskUseCase findTaskUseCase = new FindTaskUseCase(taskOutPut);
 
 
-        Task task= Task.create(randomId, "Design Homepage", 5, "John Doe", TaskStatus.ACTIVE, fixedClock);
+        Task task = Task.create(randomId, "Design Homepage", 5, "John Doe", TaskStatus.ACTIVE, fixedClock);
 
         when(taskOutPut.validateTitle("Design Homepage")).thenReturn(true);
 

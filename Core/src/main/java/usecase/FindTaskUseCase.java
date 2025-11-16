@@ -17,17 +17,17 @@ public class FindTaskUseCase implements FindTaskInput {
     @Override
     public Task findTask(String title) {
 
-        if(!taskOutPut.validateTitle(title)) {
+        if (!taskOutPut.validateTitle(title)) {
             throw new TaskUseCaseException("Invalid title");
         }
 
-       Task task= taskOutPut.findTask(title);
+        Task task = taskOutPut.findTask(title);
 
-        if(task== null) {
+        if (task == null) {
             throw new TaskUseCaseException("Task not found");
         }
 
-        return task ;
+        return task;
 
 
     }
