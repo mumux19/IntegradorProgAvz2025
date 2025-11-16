@@ -23,30 +23,26 @@ public class CreateProjectUseCaseTest {
     long randomId = ThreadLocalRandom.current().nextLong(1, 1000);
     @Mock
     ProjectOutPut projectOutPut;
-
     @Test
     public void CreateProjectTrue() {
-        CreateProjectUseCase createProjectUseCase = new CreateProjectUseCase(projectOutPut);
+        CreateProjectUseCase createProjectUseCase=new CreateProjectUseCase(projectOutPut);
 
         when(projectOutPut.validateName("Website Redesign")).thenReturn(false);
         when(projectOutPut.saveProject(any(Project.class))).thenReturn(true);
-        Project resultado = createProjectUseCase.createProject(
+        boolean resultado=createProjectUseCase.createProject(randomId,
                 "Website Redesign",
                 LocalDate.now().plusMonths(1),
                 LocalDate.now().plusMonths(2),
                 ProjectStatus.ACTIVE,
                 "Redesign the corporate website to improve user experience.");
-        Assertions.assertNotNull(resultado);                     // Se creó un proyecto
-        Assertions.assertEquals("Website Redesign", resultado.getName());
-        Assertions.assertEquals(ProjectStatus.ACTIVE, resultado.getStatus());
+        Assertions.assertEquals(resultado,true);
 
     }
-
     @Test
     public void CreateProjectAlreadyExists() {
         CreateProjectUseCase createProjectUseCase = new CreateProjectUseCase(projectOutPut);
         when(projectOutPut.validateName("Website Redesign")).thenReturn(true);
-        Assertions.assertThrows(ProjectUseCaseException.class, () -> createProjectUseCase.createProject(
+        Assertions.assertThrows(ProjectUseCaseException.class, () -> createProjectUseCase.createProject(randomId,
                 "Website Redesign",
                 LocalDate.now().plusMonths(1),
                 LocalDate.now().plusMonths(2),
@@ -55,13 +51,12 @@ public class CreateProjectUseCaseTest {
 
 
     }
-
     @Test
     public void CreateProjectErrorSave() {
         CreateProjectUseCase createProjectUseCase = new CreateProjectUseCase(projectOutPut);
         when(projectOutPut.validateName("Website Redesign")).thenReturn(false);
         when(projectOutPut.saveProject(any(Project.class))).thenReturn(false);
-        Assertions.assertThrows(ProjectUseCaseException.class, () -> createProjectUseCase.createProject(
+        Assertions.assertThrows(ProjectUseCaseException.class,  () -> createProjectUseCase.createProject(randomId,
                 "Website Redesign",
                 LocalDate.now().plusMonths(1),
                 LocalDate.now().plusMonths(2),
