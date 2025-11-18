@@ -1,5 +1,6 @@
 package model;
 
+import com.integrador.project.entity.data.ProjectData;
 import exception.ProjectException;
 
 import java.time.LocalDate;
@@ -19,10 +20,8 @@ public class Project {
         this.status = status;
         this.description = description;
     }
-    public static Project create(Long id, String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description)  {
-        if (id == null) {
-            throw new ProjectException("Project ID cannot be null");
-        }
+    public static Project create(String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description)  {
+        Long id=0L;
         if (name == null || name.isEmpty()) {
             throw new ProjectException("Project name cannot be null or empty");
         }
@@ -49,5 +48,22 @@ public class Project {
     }
 
 
-
+    public String getName() {
+        return name;
+    }
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+    public Long getId() {
+        return id;
+    }
+    public ProjectStatus getStatus() {
+        return status;
+    }
+    public String getDescription() {
+        return description;
+    }
 }

@@ -15,8 +15,8 @@ public class CreateProjectUseCase implements CreateProjectInput {
         this.projectOutPut = projectOutPut;
     }
     @Override
-    public boolean createProject(long id, String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description)  {
-        Project project=Project.create(id,name,startDate,endDate,status,description);
+    public boolean createProject(String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description)  {
+        Project project=Project.create(name,startDate,endDate,status,description);
         if (projectOutPut.validateName(name)){
             throw new ProjectUseCaseException("The project already exists");
         }
