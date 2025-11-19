@@ -7,10 +7,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import output.ProjectOutPut;
+import output.TaskOutPut;
 
-import java.util.concurrent.ThreadLocalRandom;
-
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -19,46 +17,66 @@ public class DeleteProjectUseCaseTest {
     @Mock
     ProjectOutPut projectOutPut;
 
+    @Mock
+    TaskOutPut taskOutPut;
+
     @Test
-    public void deleteProjectTrue() throws Exception {
-        Long id = 10L;
+    public void deleteProjectSuccess() {
+        Long projectId = 10L;
 
-        DeleteProjectUseCase useCase = new DeleteProjectUseCase(projectOutPut);
+        DeleteProjectUseCase useCase = new DeleteProjectUseCase(projectOutPut, taskOutPut);
 
-        when(projectOutPut.existsById(id)).thenReturn(true);
-        when(projectOutPut.deleteProject(id)).thenReturn(true);
+        when(projectOutPut.existsById(projectId)).thenReturn(true);
+        when(taskOutPut.countTasksByProjectId(projectId)).thenReturn(0);
+        when(projectOutPut.deleteById(projectId)).thenReturn(true);
 
-        boolean result = useCase.deleteProject(id);
+        boolean result = useCase.deleteProject(projectId);
 
         Assertions.assertTrue(result);
     }
 
     @Test
-    public void deleteProjectNotExists() {
-        Long id = 20L;
+    public void deleteProjectNotFound() {
+        Long projectId = 20L;
 
-        DeleteProjectUseCase useCase = new DeleteProjectUseCase(projectOutPut);
+        DeleteProjectUseCase useCase = new DeleteProjectUseCase(projectOutPut, taskOutPut);
 
-        when(projectOutPut.existsById(id)).thenReturn(false);
+        when(projectOutPut.existsById(projectId)).thenReturn(false);
 
         Assertions.assertThrows(
                 ProjectUseCaseException.class,
-                () -> useCase.deleteProject(id)
+                () -> useCase.deleteProject(projectId)
         );
     }
 
     @Test
-    public void deleteProjectFails() throws Exception {
-        Long id = 30L;
+    public void deleteProjectWithTasksFails() {
+        Long projectId = 30L;
 
-        DeleteProjectUseCase useCase = new DeleteProjectUseCase(projectOutPut);
+        DeleteProjectUseCase useCase = new DeleteProjectUseCase(projectOutPut, taskOutPut);
 
-        when(projectOutPut.existsById(id)).thenReturn(true);
-        when(projectOutPut.deleteProject(id)).thenReturn(false);
+        when(projectOutPut.existsById(projectId)).thenReturn(true);
+        when(taskOutPut.countTasksByProjectId(projectId)).thenReturn(5);
 
         Assertions.assertThrows(
                 ProjectUseCaseException.class,
-                () -> useCase.deleteProject(id)
+                () -> useCase.deleteProject(projectId)
+        );
+    }
+
+    @Test
+    public void deleteProjectDeleteFails() {
+        Long projectId = 40L;
+
+        DeleteProjectUseCase useCase = new DeleteProjectUseCase(projectOutPut, taskOutPut);
+
+        when(projectOutPut.existsById(projectId)).thenReturn(true);
+        when(taskOutPut.countTasksByProjectId(projectId)).thenReturn(0);
+        when(projectOutPut.deleteById(projectId)).thenReturn(false);
+
+        Assertions.assertThrows(
+                ProjectUseCaseException.class,
+                () -> useCase.deleteProject(projectId)
         );
     }
 }

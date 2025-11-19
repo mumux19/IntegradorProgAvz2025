@@ -1,6 +1,5 @@
 package usecase;
 
-
 import exception.ProjectUseCaseException;
 import model.Project;
 import model.ProjectStatus;
@@ -14,52 +13,67 @@ import usecase.CreateProjectUseCase;
 
 import java.time.LocalDate;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-
 public class CreateProjectUseCaseTest {
+
     @Mock
     ProjectOutPut projectOutPut;
-    @Test
-    public void CreateProjectTrue() {
-        CreateProjectUseCase createProjectUseCase=new CreateProjectUseCase(projectOutPut);
 
-        when(projectOutPut.validateName("Website Redesign")).thenReturn(false);
-        when(projectOutPut.saveProject(any(Project.class))).thenReturn(true);
-        boolean resultado=createProjectUseCase.createProject( "Website Redesign",
-                LocalDate.now().plusMonths(1),
-                LocalDate.now().plusMonths(2),
-                ProjectStatus.ACTIVE,"Redesign the corporate website to improve user experience.");
-        Assertions.assertEquals(resultado,true);
-
-    }
     @Test
-    public void CreateProjectAlreadyExists() {
-        CreateProjectUseCase createProjectUseCase = new CreateProjectUseCase(projectOutPut);
-        when(projectOutPut.validateName("Website Redesign")).thenReturn(true);
-        Assertions.assertThrows(ProjectUseCaseException.class, () -> createProjectUseCase.createProject(
+    public void createProjectSuccess() {
+        Project project = Project.create(
                 "Website Redesign",
-                LocalDate.now().plusMonths(1),
-                LocalDate.now().plusMonths(2),
+                LocalDate.of(2025, 10, 1),
+                LocalDate.of(2025, 12, 1),
                 ProjectStatus.ACTIVE,
-                "Redesign the corporate website to improve user experience."));
+                "Redesign corporate website"
+        );
 
+        when(projectOutPut.existsByName(project.getName())).thenReturn(false);
+        when(projectOutPut.save(project)).thenReturn(true);
 
+        CreateProjectUseCase useCase = new CreateProjectUseCase(projectOutPut);
+
+        Project result = useCase.createProject(project);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(project.getName(), result.getName());
     }
+
     @Test
-    public void CreateProjectErrorSave() {
-        CreateProjectUseCase createProjectUseCase = new CreateProjectUseCase(projectOutPut);
-        when(projectOutPut.validateName("Website Redesign")).thenReturn(false);
-        when(projectOutPut.saveProject(any(Project.class))).thenReturn(false);
-        Assertions.assertThrows(ProjectUseCaseException.class,  () -> createProjectUseCase.createProject(
+    public void createProjectNameExists() {
+        Project project = Project.create(
                 "Website Redesign",
-                LocalDate.now().plusMonths(1),
-                LocalDate.now().plusMonths(2),
+                LocalDate.of(2025, 10, 1),
+                LocalDate.of(2025, 12, 1),
                 ProjectStatus.ACTIVE,
-                "Redesign the corporate website to improve user experience."));
+                "Redesign corporate website"
+        );
+
+        when(projectOutPut.existsByName(project.getName())).thenReturn(true);
+
+        CreateProjectUseCase useCase = new CreateProjectUseCase(projectOutPut);
+
+        Assertions.assertThrows(ProjectUseCaseException.class, () -> useCase.createProject(project));
     }
 
+    @Test
+    public void createProjectSaveFails() {
+        Project project = Project.create(
+                "Website Redesign",
+                LocalDate.of(2025, 10, 1),
+                LocalDate.of(2025, 12, 1),
+                ProjectStatus.ACTIVE,
+                "Redesign corporate website"
+        );
 
+        when(projectOutPut.existsByName(project.getName())).thenReturn(false);
+        when(projectOutPut.save(project)).thenReturn(false);
+
+        CreateProjectUseCase useCase = new CreateProjectUseCase(projectOutPut);
+
+        Assertions.assertThrows(ProjectUseCaseException.class, () -> useCase.createProject(project));
+    }
 }
