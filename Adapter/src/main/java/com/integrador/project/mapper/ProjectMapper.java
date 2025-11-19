@@ -4,18 +4,23 @@ import com.integrador.project.entity.data.ProjectData;
 import model.Project;
 
 public class ProjectMapper {
-    public static Project projectMapperDataCore (ProjectData project) {
+
+
+    public static Project projectMapperDataCore(ProjectData data) {
+        if (data == null) return null;
         return Project.create(
-                project.getName(),
-                project.getStartDate(),
-                project.getEndDate(),
-                project.getStatus(),
-                project.getDescription()
+                data.getName(),
+                data.getStartDate(),
+                data.getEndDate(),
+                data.getStatus(),
+                data.getDescription()
         );
     }
 
-    public static ProjectData projectMapperCoreAData (Project project) {
+    public static ProjectData projectMapperCoreAData(Project project) {
         return ProjectData.createProjectData(project);
-
     }
+
+
 }
+
