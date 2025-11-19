@@ -29,7 +29,8 @@ public class Task {
         this.createdAt = createdAt;
     }
 
-
+    public Task() {
+    }
 
     public static Task create(Project project,
                               String title,

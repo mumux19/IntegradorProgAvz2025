@@ -68,4 +68,7 @@ public class TaskDTO {
         return status;
     }
 
+    public void setTitle(String s) {
+
+    }
 }
