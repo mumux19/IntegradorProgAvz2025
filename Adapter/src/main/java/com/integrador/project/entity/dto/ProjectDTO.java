@@ -22,7 +22,9 @@ public class ProjectDTO {
     private ProjectStatus status;
     @JsonProperty("description")
     private String description;
+
     public ProjectDTO() {}
+
     public ProjectDTO(String name, LocalDate endDate, LocalDate startDate, Long id, ProjectStatus status, String description) {
         this.name = name;
         this.endDate = endDate;
@@ -36,9 +38,7 @@ public class ProjectDTO {
     public String getName() {
         return name;
     }
-    public void setName(String name) {
-        this.name = name;
-    }
+
     public LocalDate getStartDate() {
         return startDate;
     }
