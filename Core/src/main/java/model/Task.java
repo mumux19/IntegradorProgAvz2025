@@ -8,7 +8,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class Task {
+
     private Long id;
+    private Project project;
     private String title;
     private Integer estimateHours;
     private String assignee;
@@ -16,76 +18,54 @@ public class Task {
     private LocalDateTime finishedAt;
     private LocalDateTime createdAt;
 
-    private Task(Long id, String title, Integer estimateHours, String assignee, TaskStatus status, LocalDateTime createdAt) {
+    private Task(Long id, Project project, String title, Integer estimateHours, String assignee, TaskStatus status, LocalDateTime createdAt, LocalDateTime finishedAt) {
         this.id = id;
+        this.project = project;
         this.title = title;
         this.estimateHours = estimateHours;
         this.assignee = assignee;
         this.status = status;
-        this.finishedAt = createdAt;
+        this.finishedAt= finishedAt;
         this.createdAt = createdAt;
     }
 
-    public static Task create(Long id, String title, Integer estimateHours, String assignee, TaskStatus status, Clock clock) {
-        LocalDateTime now = LocalDateTime.now();
-
-        if (title == null || title.isEmpty()) {
-            throw new TaskException("Task title cannot be null or empty");
-        }
-        if (estimateHours == null || estimateHours <= 0) {
-            throw new TaskException("Estimate hours must be a positive integer");
-        }
-        if (assignee == null || assignee.isEmpty()) {
-            throw new TaskException("Assignee cannot be null or empty");
-        }
-        if (status == null) {
-            throw new TaskException("Task status cannot be null");
-        }
-
-        if (clock == null) {
-
-            throw new TaskException("Clock cannot be null");
-        }
-
-        Instant nowSystem = Instant.now(Clock.systemDefaultZone());
-
-        Instant nowFromClock = Instant.now(clock);
-
-        if (nowFromClock.isAfter(nowSystem)) {
-            throw new TaskException("Clock time cannot be in the future compared to system time");
-        }
 
 
-        return new Task(id, title, estimateHours, assignee, status, now);
+    public static Task create(Project project,
+                              String title,
+                              Integer estimateHours,
+                              String assignee,
+                              TaskStatus status,Clock clock) {
 
+        if (project == null) throw new TaskException("Task must belong to a project");
+        if (title == null || title.isEmpty()) throw new TaskException("Task title cannot be null or empty");
+        if (estimateHours == null || estimateHours <= 0) throw new TaskException("Estimate hours must be a positive integer");
+        if (status == null) throw new TaskException("Task status cannot be null");
+        if (clock == null) throw new TaskException("Clock cannot be null");
+
+        LocalDateTime now = LocalDateTime.now(clock);
+        LocalDateTime finished = (status == TaskStatus.DONE) ? now : null;
+        return new Task( null,project, title, estimateHours, assignee, status, now,finished);
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public String getTitle() {
-        return title;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Integer getEstimateHours() {
-        return estimateHours;
-    }
+    public Project getProject() { return project; }
+    public void setProject(Project project) { this.project = project; }
 
-    public String getAssignee() {
-        return assignee;
-    }
+    public String getTitle() { return title; }
 
-    public TaskStatus getStatus() {
-        return status;
-    }
+    public Integer getEstimateHours() { return estimateHours; }
 
-    public LocalDateTime getFinishedAt() {
-        return finishedAt;
-    }
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public TaskStatus getStatus() { return status; }
+    public void setStatus(TaskStatus status) { this.status = status; }
+
+    public LocalDateTime getFinishedAt() { return finishedAt; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
 }
-

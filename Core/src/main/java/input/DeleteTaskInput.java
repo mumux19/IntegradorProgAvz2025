@@ -1,5 +1,5 @@
 package input;
 
 public interface DeleteTaskInput {
-    boolean deleteTask(String name) throws Exception;
+    boolean deleteTask(Long projectId, Long taskId);
 }
