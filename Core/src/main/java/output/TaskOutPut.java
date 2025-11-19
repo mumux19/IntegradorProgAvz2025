@@ -1,16 +1,15 @@
 package output;
 
-
 import model.Task;
+
+import java.util.List;
 
 public interface TaskOutPut {
 
-    boolean validateTitle(String title);
-
     boolean saveTask(Task task);
-
-    boolean deleteTask(String title) throws Exception;
-
-    Task findTask(String title);
-
+    List<Task> findTasks(Long projectId, Integer minEstimate, String assignee);
+    Task findTaskById(Long taskId);
+    boolean deleteTaskById(Long taskId);
+    boolean validateTitle(String title);
+    int countTasksByProjectId(Long projectId);
 }

@@ -1,5 +1,6 @@
 package model;
 
+import exception.TaskException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -7,10 +8,9 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class TaskTest {
-    long randomId = ThreadLocalRandom.current().nextLong(1, 1000);
+
     Clock fixedClock = Clock.fixed(
             LocalDateTime.of(2025, 11, 11, 10, 0).toInstant(ZoneOffset.UTC),
             ZoneOffset.UTC
@@ -18,94 +18,59 @@ public class TaskTest {
 
     @Test
     public void FactoryTrue() {
-        Task task = Task.create(randomId,
+        Project project = Project.create(
                 "Website Redesign",
+                LocalDate.of(2025, 10, 1),
+                LocalDate.of(2025, 12, 1),
+                ProjectStatus.ACTIVE,
+                "Corporate website redesign"
+        );
+
+        Task task = Task.create(
+                project,
+                "Design landing page",
                 5,
                 "John Doe",
                 TaskStatus.ACTIVE,
-                fixedClock);
+                fixedClock
+        );
 
         Assertions.assertNotNull(task);
-
+        Assertions.assertEquals(project, task.getProject());
+        Assertions.assertEquals("Design landing page", task.getTitle());
+        Assertions.assertEquals(5, task.getEstimateHours());
+        Assertions.assertEquals("John Doe", task.getAssignee());
+        Assertions.assertEquals(TaskStatus.ACTIVE, task.getStatus());
+        Assertions.assertNotNull(task.getCreatedAt());
+        Assertions.assertNull(task.getFinishedAt());
     }
-
 
     @Test
     public void FactoryFalse() {
-        Assertions.assertThrows(exception.TaskException.class, () -> {
-            Task.create(null, "Website Redesign", 5, "John Doe", TaskStatus.ACTIVE, java.time.Clock.systemUTC());
-        });
-        Assertions.assertThrows(exception.TaskException.class, () -> {
-            Task.create(randomId, null, 5, "John Doe",
-                    TaskStatus.ACTIVE,
-                    fixedClock);
-        });
-        Assertions.assertThrows(exception.TaskException.class, () -> {
-            Task.create(randomId,
-                    "",
-                    5,
-                    "John Doe",
-                    TaskStatus.ACTIVE,
-                    fixedClock);
-        });
-        Assertions.assertThrows(exception.TaskException.class, () -> {
-            Task.create(randomId,
-                    "Website Redesign",
-                    -1,
-                    "John Doe",
-                    TaskStatus.ACTIVE,
-                    fixedClock);
-        });
-        Assertions.assertThrows(exception.TaskException.class, () -> {
-            Task.create(randomId,
-                    "Website Redesign",
-                    null,
-                    "John Doe",
-                    TaskStatus.ACTIVE,
-                    fixedClock);
-        });
-        Assertions.assertThrows(exception.TaskException.class, () -> {
-            Task.create(randomId,
-                    "Website Redesign",
-                    5,
-                    null,
-                    TaskStatus.ACTIVE,
-                    fixedClock);
-        });
-        Assertions.assertThrows(exception.TaskException.class, () -> {
-            Task.create(randomId,
-                    "Website Redesign",
-                    5,
-                    "",
-                    TaskStatus.ACTIVE,
-                    fixedClock);
-        });
-        Assertions.assertThrows(exception.TaskException.class, () -> {
-            Task.create(randomId,
-                    "Website Redesign",
-                    5,
-                    "John Doe",
-                    null,
-                    fixedClock);
-        });
-        Assertions.assertThrows(exception.TaskException.class, () -> {
-            Task.create(randomId,
-                    "Website Redesign",
-                    5,
-                    "John Doe",
-                    TaskStatus.ACTIVE,
-                    null);
-        });
+        Project project = Project.create(
+                "Website Redesign",
+                LocalDate.of(2025, 10, 1),
+                LocalDate.of(2025, 12, 1),
+                ProjectStatus.ACTIVE,
+                "Corporate website redesign"
+        );
 
-        LocalDateTime futureTime = LocalDateTime.of(2030, 1, 1, 0, 0);
-        Clock futureClock = Clock.fixed(futureTime.toInstant(ZoneOffset.UTC), ZoneOffset.UTC);
-        Assertions.assertThrows(exception.TaskException.class, () -> {
-            Task.create(randomId,
-                    "Website Redesign",
-                    5,
-                    "John Doe",
-                    TaskStatus.ACTIVE,
-                    futureClock);
-        });
+        Assertions.assertThrows(TaskException.class, () ->
+                Task.create(null, "Task Title", 5, "John Doe", TaskStatus.ACTIVE, fixedClock));
+
+        Assertions.assertThrows(TaskException.class, () ->
+                Task.create(project, null, 5, "John Doe", TaskStatus.ACTIVE, fixedClock));
+
+        Assertions.assertThrows(TaskException.class, () ->
+                Task.create(project, "", 5, "John Doe", TaskStatus.ACTIVE, fixedClock));
+
+        Assertions.assertThrows(TaskException.class, () ->
+                Task.create(project, "Task Title", -1, "John Doe", TaskStatus.ACTIVE, fixedClock));
+
+        Assertions.assertThrows(TaskException.class, () ->
+                Task.create(project, "Task Title", 5, "John Doe", null, fixedClock));
+
+        Assertions.assertThrows(TaskException.class, () ->
+                Task.create(project, "Task Title", 5, "John Doe", TaskStatus.ACTIVE, null));
     }
 }
