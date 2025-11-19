@@ -19,35 +19,50 @@ public class Project {
         this.status = status;
         this.description = description;
     }
-    public static Project create(Long id, String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description)  {
-       if (id == null) {
-           throw new ProjectException("Project ID cannot be null");
-       }
-       if (name == null || name.isEmpty()) {
-           throw new ProjectException("Project name cannot be null or empty");
-         }
-       if (startDate == null) {
-           throw new ProjectException("Start date cannot be null");
-       }
-       if (endDate == null) {
-           throw new ProjectException("End date cannot be null");
-       }
-       if (endDate.isBefore(startDate)) {
+    public static Project create(String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description)  {
+        Long id=0L;
+        if (name == null || name.isEmpty()) {
+            throw new ProjectException("Project name cannot be null or empty");
+        }
+        if (startDate == null) {
+            throw new ProjectException("Start date cannot be null");
+        }
+        if (endDate == null) {
+            throw new ProjectException("End date cannot be null");
+        }
+        if (endDate.isBefore(startDate)) {
             throw new ProjectException("The end date cannot be earlier than the start date");
-       }
+        }
         if (endDate.isBefore(LocalDate.now())) {
             throw new ProjectException("The end date cannot be earlier than today");
         }
-       if (status == null) {
-           throw new ProjectException ("Project status cannot be null");
-       }
-       if (description == null || description.isEmpty()) {
-           throw new ProjectException("Project description cannot be null or empty");
-       }
+        if (status == null) {
+            throw new ProjectException ("Project status cannot be null");
+        }
+        if (description == null || description.isEmpty()) {
+            throw new ProjectException("Project description cannot be null or empty");
+        }
 
         return new Project(id, name, startDate, endDate, status, description);
     }
 
 
-
+    public String getName() {
+        return name;
+    }
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+    public Long getId() {
+        return id;
+    }
+    public ProjectStatus getStatus() {
+        return status;
+    }
+    public String getDescription() {
+        return description;
+    }
 }

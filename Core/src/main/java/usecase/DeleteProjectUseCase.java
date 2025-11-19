@@ -12,13 +12,16 @@ public class DeleteProjectUseCase implements DeleteProjectInput {
     }
 
     @Override
-    public boolean deleteProject(String name) throws Exception {
-        if(!projectOutPut.validateName(name)){
+    public boolean deleteProject(Long id) throws Exception {
+
+        if (!projectOutPut.existsById(id)) {
             throw new ProjectUseCaseException("There is no project with that ID");
         }
-        if(!projectOutPut.deleteProject(name)){
+
+        if (!projectOutPut.deleteProject(id)) {
             throw new ProjectUseCaseException("Error deleting project");
         }
+
         return true;
     }
 

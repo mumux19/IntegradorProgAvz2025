@@ -1,5 +1,5 @@
 package input;
 
 public interface DeleteProjectInput {
-    boolean deleteProject(String name) throws Exception;
+    boolean deleteProject(Long id) throws Exception;
 }

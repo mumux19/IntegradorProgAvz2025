@@ -8,6 +8,7 @@ import output.TaskOutPut;
 
 public class DeleteTaskUseCase implements DeleteTaskInput {
     TaskOutPut taskOutPut;
+
     public DeleteTaskUseCase(TaskOutPut taskOutPut) {
         this.taskOutPut = taskOutPut;
     }
@@ -15,11 +16,11 @@ public class DeleteTaskUseCase implements DeleteTaskInput {
 
     @Override
     public boolean deleteTask(String title) throws Exception {
-        if(!taskOutPut.validateTitle(title)){
+        if (!taskOutPut.validateTitle(title)) {
             throw new TaskUseCaseException("There is no task with that name");
         }
 
-        if(!taskOutPut.deleteTask(title)){
+        if (!taskOutPut.deleteTask(title)) {
             throw new TaskUseCaseException("Error deleting task");
         }
 
