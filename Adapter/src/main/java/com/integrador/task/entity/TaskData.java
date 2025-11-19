@@ -7,7 +7,7 @@ import model.TaskStatus;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "tasks")
+@Entity(name = "tasks") //nombre de la tabla en la base de datos
 @SequenceGenerator(
         name = "tasks_id_seq",
         sequenceName = "tasks_id_seq",
@@ -15,8 +15,9 @@ import java.time.LocalDateTime;
         allocationSize = 1)
 public class TaskData {
 
+
     @Id
-    @Column(name = "id")
+    @Column(name = "idtask")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tasks_id_seq")
     private Long id;
 
@@ -44,6 +45,7 @@ public class TaskData {
     private LocalDateTime createdAt;
 
     public TaskData() {
+
     }
 
     public TaskData(Long id, ProjectData project, String title, Integer estimateHours, String assignee,

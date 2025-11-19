@@ -5,8 +5,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TaskCrud extends CrudRepository<TaskData, Integer> {
-
+public interface TaskCrud extends CrudRepositoryTask<TaskData,Long> {
     boolean existsByTitle(String title);
-    boolean existsByDescription(String description);
+    boolean deleteTask(Long id);
+    boolean saveTask(TaskData taskData);
+
 }
