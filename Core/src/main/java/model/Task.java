@@ -6,7 +6,6 @@ import exception.TaskException;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 public class Task {
     private Long id;
@@ -18,8 +17,9 @@ public class Task {
     private LocalDateTime finishedAt;
     private LocalDateTime createdAt;
 
-    private Task(Long id, String title, Integer estimateHours, String assignee, TaskStatus status, LocalDateTime createdAt) {
+    private Task(Long id, Project project, String title, Integer estimateHours, String assignee, TaskStatus status, LocalDateTime createdAt) {
         this.id = id;
+        this.project = project;
         this.title = title;
         this.estimateHours = estimateHours;
         this.assignee = assignee;
@@ -28,7 +28,7 @@ public class Task {
         this.createdAt = createdAt;
     }
 
-    public static Task create(Long id, String title, Integer estimateHours, String assignee, TaskStatus status, Clock clock) {
+    public static Task create(Long id,Project project, String title, Integer estimateHours, String assignee, TaskStatus status, Clock clock) {
         LocalDateTime now = LocalDateTime.now();
         if (id == null) {
             throw new TaskException("Task ID cannot be null");
@@ -60,7 +60,7 @@ public class Task {
         }
 
 
-        return new Task(id, title, estimateHours, assignee, status, now);
+        return new Task(id,project , title, estimateHours, assignee, status, now);
 
     }
 

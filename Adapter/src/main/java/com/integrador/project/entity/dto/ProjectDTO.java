@@ -14,9 +14,9 @@ public class ProjectDTO {
     private Long id;
     @JsonProperty("name")
     private String name;
-    @JsonProperty("start_date")
+    @JsonProperty("startDate")
     private LocalDate startDate;
-    @JsonProperty("end_date")
+    @JsonProperty("endDate")
     private LocalDate endDate;
     @JsonProperty("status")
     private ProjectStatus status;

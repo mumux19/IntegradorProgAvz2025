@@ -1,6 +1,5 @@
 package model;
 
-import com.integrador.project.entity.data.ProjectData;
 import exception.ProjectException;
 
 import java.time.LocalDate;

@@ -35,11 +35,13 @@ public class ProjectRepository implements ProjectOutPut {
     public boolean deleteProject(Long projectId) throws Exception {
         if (!projectCrud.existsById(projectId)) {
             throw new ProjectException("There is no project with that ID");
-        } else {
-            projectCrud.deleteById(projectId);
-            return true;
-
         }
+
+
+        projectCrud.deleteById(projectId);
+        return true;
+
+
     }
     @Override
     public Project findById(Long id) {
