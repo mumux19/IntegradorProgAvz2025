@@ -8,51 +8,67 @@ import model.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import output.ProjectOutPut;
+import output.TaskOutPut;
+
+import java.util.Optional;
 
 @Repository
 public class ProjectRepository implements ProjectOutPut {
 
     private final ProjectCrud projectCrud;
+    private final TaskOutPut taskOutPut;
 
     @Autowired
-    public ProjectRepository(ProjectCrud projectCrud) {
+    public ProjectRepository(ProjectCrud projectCrud, TaskOutPut taskOutPut) {
         this.projectCrud = projectCrud;
+        this.taskOutPut = taskOutPut;
     }
 
     @Override
-    public boolean validateName(String name) {
-        return projectCrud.existsByName(name);
-    }
-
-    @Override
-    public boolean saveProject(Project project) {
+    public boolean save(Project project) {
+        if (project == null) {
+            throw new ProjectException("Project cannot be null");
+        }
         ProjectData data = ProjectMapper.projectMapperCoreAData(project);
         projectCrud.save(data);
         return true;
     }
 
     @Override
-    public boolean deleteProject(Long projectId) throws Exception {
-        if (!projectCrud.existsById(projectId)) {
-            throw new ProjectException("There is no project with that ID");
-        }
+    public Optional<Project> findById(Long id) {
+        if (id == null) throw new ProjectException("Project ID must be provided");
 
-
-        projectCrud.deleteById(projectId);
-        return true;
-
-
-    }
-    @Override
-    public Project findById(Long id) {
-        ProjectData data = projectCrud.findById(id)
-                .orElseThrow(() -> new ProjectException("Project not found"));
-
-        return ProjectMapper.projectMapperDataCore(data);
+        Optional<ProjectData> optional = projectCrud.findById(id);
+        return optional.map(ProjectMapper::projectMapperDataCore);
     }
 
     @Override
     public boolean existsById(Long id) {
+        if (id == null) throw new ProjectException("Project ID must be provided");
         return projectCrud.existsById(id);
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new ProjectException("Project name must be provided");
+        }
+        return projectCrud.existsByName(name);
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
+        if (id == null) throw new ProjectException("Project ID must be provided");
+
+        if (!projectCrud.existsById(id)) {
+            throw new ProjectException("Project not found");
+        }
+
+        if (taskOutPut.countTasksByProjectId(id) > 0) {
+            throw new ProjectException("Cannot delete project: it still has tasks");
+        }
+
+        projectCrud.deleteById(id);
+        return true;
     }
 }

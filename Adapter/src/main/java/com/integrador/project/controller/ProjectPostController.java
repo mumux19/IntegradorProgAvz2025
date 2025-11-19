@@ -1,22 +1,18 @@
 package com.integrador.project.controller;
 
-import com.integrador.project.crud.ProjectCrud;
-import com.integrador.project.entity.data.ProjectData;
-import com.integrador.project.entity.dto.ProjectDTO;
-import com.integrador.project.mapper.ProjectMapper;
+import exception.DuplicateResourceException;
+import exception.ProjectException;
 import input.CreateProjectInput;
 import model.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/projects")
 public class ProjectPostController {
+
     private final CreateProjectInput createProjectInput;
 
     @Autowired
@@ -24,19 +20,22 @@ public class ProjectPostController {
         this.createProjectInput = createProjectInput;
     }
 
-
     @PostMapping
-    public ResponseEntity<?> createProject(@RequestBody ProjectDTO dto) {
-        if( createProjectInput.createProject(
-                dto.getName(),
-                dto.getStartDate(),
-                dto.getEndDate(),
-                dto.getStatus(),
-                dto.getDescription()
-        ))
-            return ResponseEntity.status(HttpStatus.CREATED).body("Created Successfully");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Creation Failed");
+    public ResponseEntity<?> createProject(@RequestBody Project dto) {
+        try {
+            Project created = createProjectInput.createProject(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Project created correctly");
+        } catch (DuplicateResourceException e) {
 
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 
+        } catch (ProjectException e) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
+        } catch (Exception e) {
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
+        }
     }
 }

@@ -11,6 +11,8 @@ public class Project {
     private LocalDate endDate;
     private ProjectStatus status;
     private String description;
+
+    Project(){}
     Project(Long id, String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description) {
         this.id = id;
         this.name = name;
