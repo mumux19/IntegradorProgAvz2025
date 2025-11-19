@@ -1,4 +1,4 @@
-package com.integrador.task.entity;
+package com.integrador.task.entity.data;
 
 
 import com.integrador.project.entity.data.ProjectData;
@@ -8,49 +8,48 @@ import model.TaskStatus;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "tasks") //nombre de la tabla en la base de datos
+@Entity
+@Table(name = "tasks")
 @SequenceGenerator(
-        name = "tasks_id_seq",
-        sequenceName = "tasks_id_seq",
-        initialValue = 1,
-        allocationSize = 1)
+        name = "task_seq",
+        sequenceName = "task_seq",
+        allocationSize = 1
+)
 public class TaskData {
 
-
     @Id
-    @Column(name = "idtask")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tasks_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_seq")
+    @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project", nullable = false)
     private ProjectData project;
 
-    @Column(name = "title")
+    @Column(name="title",nullable = false)
     private String title;
 
-    @Column(name = "estimate_hours")
+    @Column(name="estimateHours",nullable = false)
     private Integer estimateHours;
 
-    @Column(name = "assignee")
+    @Column(name="assignee",nullable = false)
     private String assignee;
 
-    @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @Column(name="status",nullable = false)
     private TaskStatus status;
 
-    @Column(name = "finished_at")
+    @Column(name="finishedAt",nullable = false)
     private LocalDateTime finishedAt;
 
-    @Column(name = "created_at")
+    @Column(name="createAt",nullable = false)
     private LocalDateTime createdAt;
 
-    public TaskData() {
 
-    }
+    public TaskData() {}
 
-    public TaskData(Long id, ProjectData project, String title, Integer estimateHours, String assignee,
-                    TaskStatus status, LocalDateTime finishedAt, LocalDateTime createdAt) {
+    public TaskData(Long id, ProjectData project, String title, Integer estimateHours,
+                    String assignee, TaskStatus status, LocalDateTime finishedAt, LocalDateTime createdAt) {
         this.id = id;
         this.project = project;
         this.title = title;
@@ -61,11 +60,10 @@ public class TaskData {
         this.createdAt = createdAt;
     }
 
-    // Factory para convertir de dominio a JPA
-    public static TaskData create(Task task, ProjectData projectData) {
+    public static TaskData fromDomain(Task task) {
         return new TaskData(
                 task.getId(),
-                projectData,
+                ProjectData.createProjectData(task.getProject()),
                 task.getTitle(),
                 task.getEstimateHours(),
                 task.getAssignee(),
@@ -75,10 +73,17 @@ public class TaskData {
         );
     }
 
+    public static TaskData createTaskData(Task task) {
+        return fromDomain(task);
+    }
 
-    // Getters y setters
+
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public ProjectData getProject() {
@@ -93,47 +98,24 @@ public class TaskData {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public Integer getEstimateHours() {
         return estimateHours;
-    }
-
-    public void setEstimateHours(Integer estimateHours) {
-        this.estimateHours = estimateHours;
     }
 
     public String getAssignee() {
         return assignee;
     }
 
-    public void setAssignee(String assignee) {
-        this.assignee = assignee;
-    }
-
     public TaskStatus getStatus() {
         return status;
-    }
-
-    public void setStatus(TaskStatus status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getFinishedAt() {
-        return finishedAt;
-    }
-
-    public void setFinishedAt(LocalDateTime finishedAt) {
-        this.finishedAt = finishedAt;
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public LocalDateTime getFinishedAt() {
+        return finishedAt;
     }
+
 }

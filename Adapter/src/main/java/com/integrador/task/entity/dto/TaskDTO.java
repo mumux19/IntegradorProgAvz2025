@@ -1,65 +1,55 @@
-package com.integrador.task.entity;
+package com.integrador.task.entity.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.integrador.project.entity.data.ProjectData;
-import jakarta.persistence.*;
+import model.Project;
 import model.TaskStatus;
-
-import java.time.LocalDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TaskDTO {
 
-    @Id
     @JsonProperty("id")
     private Long id;
 
     @JsonProperty("project")
-    private ProjectData project;
+    private Project project;
 
     @JsonProperty("title")
     private String title;
 
-    @JsonProperty("estimate_hours")
+    @JsonProperty("estimateHours")
     private Integer estimateHours;
 
     @JsonProperty("assignee")
     private String assignee;
 
     @JsonProperty("status")
-    @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
-    @Column(name = "finished_at")
-    private LocalDateTime finishedAt;
+    public TaskDTO(){}
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-
-    public TaskDTO() {
-    }
-
-    private TaskDTO(Long id, ProjectData project, String title, Integer estimateHours, String assignee,
-                    TaskStatus status, LocalDateTime finishedAt, LocalDateTime createdAt) {
-        this.id = id;
+    public TaskDTO(Project project, String title, Integer estimateHours, String assignee, TaskStatus status) {
         this.project = project;
         this.title = title;
         this.estimateHours = estimateHours;
         this.assignee = assignee;
         this.status = status;
-        this.finishedAt = finishedAt;
-        this.createdAt = createdAt;
-
     }
 
     public Long getId() {
         return id;
     }
 
-    public ProjectData getProject() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Project getProject() {
         return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     public String getTitle() {
@@ -78,11 +68,4 @@ public class TaskDTO {
         return status;
     }
 
-    public LocalDateTime getFinishedAt() {
-        return finishedAt;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
 }
