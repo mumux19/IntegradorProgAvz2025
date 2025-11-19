@@ -11,7 +11,7 @@ public class Project {
     private LocalDate endDate;
     private ProjectStatus status;
     private String description;
-    private Project(Long id, String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description) {
+    Project(Long id, String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;

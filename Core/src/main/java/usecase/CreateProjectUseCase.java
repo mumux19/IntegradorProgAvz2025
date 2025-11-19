@@ -10,21 +10,24 @@ import output.ProjectOutPut;
 import java.time.LocalDate;
 
 public class CreateProjectUseCase implements CreateProjectInput {
-    private ProjectOutPut projectOutPut;
+    private final ProjectOutPut projectOutPut;
+
     public CreateProjectUseCase(ProjectOutPut projectOutPut) {
         this.projectOutPut = projectOutPut;
     }
+
+
+
     @Override
-    public boolean createProject(String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description)  {
-        Project project=Project.create(name,startDate,endDate,status,description);
-        if (projectOutPut.validateName(name)){
-            throw new ProjectUseCaseException("The project already exists");
+    public Project createProject(Project project) {
+        if (projectOutPut.existsByName(project.getName())) {
+            throw new ProjectUseCaseException("Project name already exists");
         }
-
-        if(projectOutPut.saveProject(project)){
-            return true;
+        if (!projectOutPut.save(project)) {
+            throw new ProjectUseCaseException("Failed to save project");
         }
-
-        throw new ProjectUseCaseException("Error saving project");
+        return project;
     }
+
+
 }
