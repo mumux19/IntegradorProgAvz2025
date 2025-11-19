@@ -1,11 +1,7 @@
 package input;
 
-import model.ProjectStatus;
-
-import java.time.LocalDate;
+import model.Project;
 
 public interface CreateProjectInput {
-    boolean createProject(long id, String name, LocalDate startDate, LocalDate endDate, ProjectStatus status, String description) ;
-
-
+    Project createProject(Project project);
 }

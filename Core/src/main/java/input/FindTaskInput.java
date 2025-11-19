@@ -2,7 +2,8 @@ package input;
 
 import model.Task;
 
-public interface FindTaskInput {
-    Task findTask(String title);
+import java.util.List;
 
+public interface FindTaskInput {
+    List<Task> findTasks(Long projectId, Integer minEstimate, String assignee);
 }

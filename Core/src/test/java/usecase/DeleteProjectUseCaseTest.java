@@ -7,41 +7,76 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import output.ProjectOutPut;
+import output.TaskOutPut;
 
-import java.util.concurrent.ThreadLocalRandom;
-
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-
 public class DeleteProjectUseCaseTest {
-    long randomId = ThreadLocalRandom.current().nextLong(1, 1000);
+
     @Mock
     ProjectOutPut projectOutPut;
-    @Test
-    public void DeleteProjectTrue() throws Exception {
-        DeleteProjectUseCase deleteProjectUseCase=new DeleteProjectUseCase(projectOutPut);
-        when(projectOutPut.validateName("Website Redesign")).thenReturn(true);
-        when(projectOutPut.deleteProject("Website Redesign")).thenReturn(true);
-        boolean resultado=deleteProjectUseCase.deleteProject("Website Redesign");
-        Assertions.assertEquals(resultado,true);
-    }
-    @Test
-    public void DeleteProjectNotExists() {
-        DeleteProjectUseCase deleteProjectUseCase = new DeleteProjectUseCase(projectOutPut);
-        when(projectOutPut.validateName("Website Redesign")).thenReturn(false);
-        Assertions.assertThrows(ProjectUseCaseException.class, () -> deleteProjectUseCase.deleteProject("Website Redesign"));
 
-    }
+    @Mock
+    TaskOutPut taskOutPut;
+
     @Test
-    public void DeleteProjectFalse() throws Exception {
-        DeleteProjectUseCase deleteProjectUseCase = new DeleteProjectUseCase(projectOutPut);
-        when(projectOutPut.validateName("Website Redesign")).thenReturn(true);
-        when(projectOutPut.deleteProject("Website Redesign")).thenReturn(false);
-        Assertions.assertThrows(ProjectUseCaseException.class, () -> deleteProjectUseCase.deleteProject("Website Redesign"));
+    public void deleteProjectSuccess() {
+        Long projectId = 10L;
+
+        DeleteProjectUseCase useCase = new DeleteProjectUseCase(projectOutPut, taskOutPut);
+
+        when(projectOutPut.existsById(projectId)).thenReturn(true);
+        when(taskOutPut.countTasksByProjectId(projectId)).thenReturn(0);
+        when(projectOutPut.deleteById(projectId)).thenReturn(true);
+
+        boolean result = useCase.deleteProject(projectId);
+
+        Assertions.assertTrue(result);
     }
 
+    @Test
+    public void deleteProjectNotFound() {
+        Long projectId = 20L;
 
+        DeleteProjectUseCase useCase = new DeleteProjectUseCase(projectOutPut, taskOutPut);
 
+        when(projectOutPut.existsById(projectId)).thenReturn(false);
+
+        Assertions.assertThrows(
+                ProjectUseCaseException.class,
+                () -> useCase.deleteProject(projectId)
+        );
+    }
+
+    @Test
+    public void deleteProjectWithTasksFails() {
+        Long projectId = 30L;
+
+        DeleteProjectUseCase useCase = new DeleteProjectUseCase(projectOutPut, taskOutPut);
+
+        when(projectOutPut.existsById(projectId)).thenReturn(true);
+        when(taskOutPut.countTasksByProjectId(projectId)).thenReturn(5);
+
+        Assertions.assertThrows(
+                ProjectUseCaseException.class,
+                () -> useCase.deleteProject(projectId)
+        );
+    }
+
+    @Test
+    public void deleteProjectDeleteFails() {
+        Long projectId = 40L;
+
+        DeleteProjectUseCase useCase = new DeleteProjectUseCase(projectOutPut, taskOutPut);
+
+        when(projectOutPut.existsById(projectId)).thenReturn(true);
+        when(taskOutPut.countTasksByProjectId(projectId)).thenReturn(0);
+        when(projectOutPut.deleteById(projectId)).thenReturn(false);
+
+        Assertions.assertThrows(
+                ProjectUseCaseException.class,
+                () -> useCase.deleteProject(projectId)
+        );
+    }
 }
