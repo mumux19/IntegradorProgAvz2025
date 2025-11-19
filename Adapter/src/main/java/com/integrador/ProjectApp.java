@@ -1,4 +1,4 @@
-package com.integrador.task;
+package com.integrador;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

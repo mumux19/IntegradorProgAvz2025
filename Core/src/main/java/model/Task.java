@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 public class Task {
     private Long id;
-    private Project project;
     private String title;
     private Integer estimateHours;
     private String assignee;
@@ -17,9 +16,8 @@ public class Task {
     private LocalDateTime finishedAt;
     private LocalDateTime createdAt;
 
-    private Task(Long id, Project project, String title, Integer estimateHours, String assignee, TaskStatus status, LocalDateTime createdAt) {
+    private Task(Long id, String title, Integer estimateHours, String assignee, TaskStatus status, LocalDateTime createdAt) {
         this.id = id;
-        this.project = project;
         this.title = title;
         this.estimateHours = estimateHours;
         this.assignee = assignee;
@@ -28,11 +26,9 @@ public class Task {
         this.createdAt = createdAt;
     }
 
-    public static Task create(Long id,Project project, String title, Integer estimateHours, String assignee, TaskStatus status, Clock clock) {
+    public static Task create(Long id, String title, Integer estimateHours, String assignee, TaskStatus status, Clock clock) {
         LocalDateTime now = LocalDateTime.now();
-        if (id == null) {
-            throw new TaskException("Task ID cannot be null");
-        }
+
         if (title == null || title.isEmpty()) {
             throw new TaskException("Task title cannot be null or empty");
         }
@@ -60,7 +56,7 @@ public class Task {
         }
 
 
-        return new Task(id,project , title, estimateHours, assignee, status, now);
+        return new Task(id, title, estimateHours, assignee, status, now);
 
     }
 

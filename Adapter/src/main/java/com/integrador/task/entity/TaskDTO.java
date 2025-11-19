@@ -2,6 +2,7 @@ package com.integrador.task.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.integrador.project.entity.data.ProjectData;
 import jakarta.persistence.*;
 import model.TaskStatus;
 
@@ -11,7 +12,6 @@ import java.time.LocalDateTime;
 public class TaskDTO {
 
     @Id
-
     @JsonProperty("id")
     private Long id;
 
@@ -54,6 +54,35 @@ public class TaskDTO {
 
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public ProjectData getProject() {
+        return project;
+    }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public Integer getEstimateHours() {
+        return estimateHours;
+    }
+
+    public String getAssignee() {
+        return assignee;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public LocalDateTime getFinishedAt() {
+        return finishedAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

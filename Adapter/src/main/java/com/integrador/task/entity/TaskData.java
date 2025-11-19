@@ -1,6 +1,7 @@
 package com.integrador.task.entity;
 
 
+import com.integrador.project.entity.data.ProjectData;
 import jakarta.persistence.*;
 import model.Task;
 import model.TaskStatus;

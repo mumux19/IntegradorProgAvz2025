@@ -5,8 +5,12 @@ import model.Task;
 
 public class Mapeo {
 
-    public static TaskData mapeoCoreData(TaskData taskData, ProjectData projectData) {
-
-        return TaskData.create(taskData, projectData);
-    }
+  public static Task taskMapperDataCore(TaskData taskData) {
+    return Task.create(
+        taskData.getTitle(),
+        taskData.getEstimateHours(),
+        taskData.getAssignee(),
+        taskData.getStatus()
+    );
+  }
 }
