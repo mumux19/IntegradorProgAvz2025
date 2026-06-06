@@ -39,6 +39,10 @@ public class Project {
     ) {
         validate(name, startDate, endDate, status);
 
+        if (endDate.isBefore(LocalDate.now())) {
+            throw new ValidationException("La fecha de finalización no puede ser anterior a hoy.");
+        }
+
         return new Project(null, name, startDate, endDate, status, description);
     }
 
@@ -62,10 +66,6 @@ public class Project {
 
         if (endDate.isBefore(startDate)) {
             throw new ValidationException("La fecha de finalización no puede ser anterior a la fecha de inicio.");
-        }
-
-        if (endDate.isBefore(LocalDate.now())) {
-            throw new ValidationException("La fecha de finalización no puede ser anterior a hoy.");
         }
 
         if (status == null) {
@@ -92,6 +92,19 @@ public class Project {
             ProjectStatus status,
             String description
     ) {
+        return new Project(id, name, startDate, endDate, status, description);
+    }
+
+    public static Project update(
+            Long id,
+            String name,
+            LocalDate startDate,
+            LocalDate endDate,
+            ProjectStatus status,
+            String description
+    ) {
+        validate(name, startDate, endDate, status);
+
         return new Project(id, name, startDate, endDate, status, description);
     }
 
